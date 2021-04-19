@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>湖南科技大学--数学建模协会主要开展活动介绍</title>
+
+    <link type="text/css" href="数学建模协会-社团简介.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <!-- 头部盒子 -->
+    <div class="header w">
+        <div class="MingZi">
+            <div class="MingChenM">
+                <h1>湖南科技大学</h1>
+
+            </div>
+            <div class="MingChenS">
+
+                <h2>|数学建模协会</h2>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- 轮播图 -->
+    <div class="LunBoTu w">
+        <div class="banner">
+            <!--banner图片-->
+            <ul class="banner-list clearFix">
+                <li><a href="#"><img src="数模照片/轮播图2.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/1.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/3.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/4.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/轮播图1.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/6.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/轮播图2.jpg" alt=""></a></li>
+
+
+            </ul>
+            <!--切换banner图片按钮-->
+            <ul class="banntoggle">
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var banner = document.getElementsByClassName("banner-list")[0]; //获取banner的盒子
+        var bannerimg = document.getElementsByClassName("banner-list")[0].getElementsByTagName("li"); //获取装轮播图的图片li
+        var bannerlist = document.getElementsByClassName("banntoggle")[0].getElementsByTagName("li"); //获取切换图片按钮livar n=0;
+        var time = setInterval(banner1, 3000); //页面加载到这启动定时器
+        var n = 0;
+        var objDom;
+        //鼠标移入banner区域清空定时器
+        banner.onmouseover = function () {
+            clearInterval(time);
+        }
+        //鼠标离开banner重新设置定时器
+        banner.onmouseout = function () {
+            time = setInterval(banner1, 2000);
+        }
+        //轮播图自动轮播
+        function banner1() {
+            n++;
+            if (n == bannerimg.length) {
+                banner.style.left = 0; //改变图片最后切换回第一张时倒退的bug
+                n = 1;
+            }
+            //每一次移动的目标值
+            objDom = { left: -1200 * n };
+            //缓冲运动的移动图片
+            move1(banner, objDom, 6);
+            var oi = { opacity: 30 };
+            //传递函数的时候 是不用写括号的  直接写函数的名字
+            //应该每一张图片都有图片的透明度的变化
+            //每一张图片的淡入淡出
+            move1(bannerimg[n], oi, 30, fn);
+            function fn() {
+                for (i = 0; i < bannerimg.length; i++) {
+                    bannerimg[i].style.opacity = 0.3;
+                }
+            }
+            var oii = { opacity: 100 };
+            move1(bannerimg[n], oii, 30);
+            var linum = n; //专门给切换图片按钮的li设置
+            if (linum == 6) {
+                linum = 0;
+            }
+            liLoop(linum);
+        }
+        //切换banner图的小按钮
+        for (i = 0; i < bannerlist.length; i++) {
+            bannerlist[i].index = i;
+            bannerlist[i].onclick = function () {
+                objDom = { left: -1100 * this.index };
+                move1(banner, objDom, 1);
+                liLoop(this.index)
+                n = this.index;
+            }
+        }
+        //封装的移动函数
+        function move1(obj, json, num, fn) {
+            clearInterval(timer)
+            var timer = setInterval(function () {
+                var tag = true;//定义一个tag来去判断值所有的属性有没有达到我们想要的值
+                //true代表已经到达了这个值
+                for (var attr in json) {
+                    if (attr == 'opacity') {
+                        var cur = parseFloat(leftSty(obj, attr)) * 100;
+                    } else {
+                        var cur = parseInt(leftSty(obj, attr));
+                    }
+                    var step = (json[attr] - cur) / num;
+                    var speed = step > 0 ? Math.ceil(cur + step) : Math.floor(cur + step);
+                    //因为 有某一个属性的目标值  比较小
+                    //这里就先去判断这个优先达到目标值的情况下  就给它停止这个定时器
+                    //只要有一个值没有达到目标  就不应该清除定时器
+                    if (speed != json[attr]) {
+                        tag = false;//定义不让清除定时器
+                    }
+                    if (attr == 'opacity') {
+                        obj.style[attr] = speed / 100;
+                    } else {
+                        obj.style[attr] = speed + 'px';
+                    }
+                }
+                if (tag) {
+                    clearInterval(timer);
+                    fn && fn();  //当我们没有传回调函数的时候  后面的 fn()不会去执行
+                    //fn是有值的时候  就会来去执行 后面的fn();
+                }
+
+            }, 30)
+        }
+        //小方块样式清空与添加
+        function liLoop(ind) { //清空切换banner图按钮
+            for (i = 0; i < bannerlist.length; i++) {
+                bannerlist[i].className = ''; //清空切换按钮
+            }
+            bannerlist[ind].className = 'active'; //给当前相对应图片的li加class  
+        }
+        //封装的获取非行间样式
+        function leftSty(obj, attr) {
+            if (obj.currentStyle) {
+                return obj.currentStyle[attr];
+            } else {
+                return getComputedStyle(obj)[attr];
+            }
+        }
+    </script>
+
+    <!-- 导航栏 -->
+    <div class="goods w">
+        <a href="#"><img src="ShumoLogo.png" alt=""></a>
+        <ul>
+            <li><a href="数学建模协会-社团简介.html" target="-slef">社团简介</a></li>
+            <li><a href="数学建模协会-团支部介绍.html" target="-slef">团支部介绍</a></li>
+            <li><a href="数学建模协会-主要开展活动介绍.html" target="-slef">主要开展活动介绍</a></li>
+            <li><a href="数学建模协会-社团荣誉及宣传报道情况介绍.html" target="-slef">社团荣誉及宣传报道情况介绍</a></li>
+
+
+        </ul>
+    </div>
+
+    <!-- 社团简介 -->
+    <div class="ZhongJian w" style="height: 2700px;">
+        <!-- 左侧导航栏 -->
+        <div class="ZuoDaoHang">
+            <h2>主要开展活动介绍</h2>
+            <div class="bd">
+                <ul>
+                    <li>
+                        <a href="#yi">
+                            <h4>活动一.以德育人——在社团中开展思政教育</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#er">
+                            <h4>活动二.“高教社杯”本科生数学建模竞赛</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#san">
+                            <h4>动三.“华为杯”研究生数学建模竞赛</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#si">
+                            <h4>其他活动</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 社团简介 -->
+        <div class="JianJie" style="line-height: 30px;">
+            <!-- <h2 style="color: gray;">社团简介</h2> -->
+            <br>
+            <h3 id="yi" style="color: gray;">活动一.以德育人——在社团中开展思政教育</h3>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp一个优秀的的高校科技创新社团应该不仅有着其良好的团队建设
+                活动，更应该要有一种端正的团队思想，这才是一个团队长期活跃和
+                进步的根源。据统计，我社 2019-2020 年度在社人员共青团员率达
+                99%，发展对象占比 30%，大学生党员占比率达历史性新高——12%，
+                因此，我们协会实行“点-线-面”结合的战略教育思想，以点带线，
+                以线聚面。在刘东海教授的指导下，我们每个月都会召开团支部会议，
+                会议中我们从“时政、协会作风、学术研究”等多线角度出发，反思
+                近段时间团队运行情况，共同探讨协会后续的一些活动举办、人员安
+                排及团风、团魂的塑造等众多发展问题。另外，为响应时代号召，我
+                们与时俱进：在“五·一”、“五·四”、“七·一”、“国庆”等重要节日，组织开展主题团活、座谈会；以征文、板报等多种形式的
+                宣传方式对我们的主题教育活动进行报道。通过宣传、教育，来增强
+                团队的民族荣誉感和爱国主义精神。因此我社依然保持着“不忘初心，
+                砥砺前行”的运作理念，将团队成员的思想教育工作放在第一位，以
+                党的 19 大精神为指导思想，根据自身优势积极开展了一系列的科技
+                创新类活动，唱响科技强国的主旋律，争取构成更加全面的创新发展
+                体系。
+            </p>
+
+            <h4>§“德育”阶段性成果展示</h4>
+            <p>
+                1 我社严良林同学在 2020 年被评为★湖南省百名优秀大学
+                生党员★。<br>
+                2 李雨泽、王丽霞、王琦、杨新同学也曾获得★中国“雷锋
+                式青年”奖章★。他们的乐于助人，勇于实践的精神也将深深刻在
+                数学建模团队的队史中！<br>
+                3 众多优秀社员于 2019-2020 年获得全国煤炭行业优秀共青
+                团员、国家奖学金、国家励志奖学金、湖南省“毅行·红色征途”挑
+                战者等共计 ★9 项国家级奖励、 5 项省级奖励，若干项市、校级
+                奖励★。<br>
+                4 若干人被评为★市、校级优秀志愿者、优秀共青团员★。
+                5 我社成员每学年获校一等奖学金人数占总人数的 10%，获
+                二、三等奖学金人数共占比 30%。<br>
+                6 为将我社的这种创新实践精神得到更好的传承与发展，扩
+                大湖南科技大学数学建模创新协会的影响力，我社成员也曾多次代表
+                湖南科技大学进行“三下乡”的社会实践活动。其中我社成员 茹智
+                利，已经★连续三年获得“三下乡优秀大学生志愿者”荣誉称号
+                ★；以成员 时伟淇 为代表的多名会员荣获“湘潭市优秀志愿者”
+                称号！<br>
+                7 因此，我社自 2015 年起，已经★连续 5 年获得“湖南科
+                技大学十佳社团”，“五四红旗团支部”★的荣誉称号。这也充分
+                说明：湖南科技大学数学建模科技创新协会的思政教育工作并不是靠
+                某一个同学撑起来的，而是每一位会员都在为集体的荣誉做着不懈的
+                努力，我们也同样相信，长此以往，我们必将成为这个领域的王者之
+                军！<br>
+            </p>
+
+
+
+            <br>
+            <h3 id="er" style="color: gray;">活动二.“高教社杯”本科生数学建模竞赛</h3>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp数学建模科技创新协会围绕“团结、创新、坚毅、务实”这一宗
+                旨，以培养学生的创新思维、动手能力为目的，把现实社会中的实际
+                问题加以提炼，抽象并建立数学模型，通过验证模型的合理性，利用
+                数学模型所提供的解答来解释现象，并提供解决现实问题的形式方
+                法。简而言之，就是建立数学模型来解决各种实际问题。
+                作为融合在多门交叉信息学科之中的社团，数学建模科技创新协
+                会不仅为我校本科生数学建模赛事的举办贡献了属于自己的一份绵
+                薄之力，以下是我社于 2019-2020 年举办的本科生数学建模比赛：<br>
+                1 2019 年 5 月 23 日至 27 日举办了第 18 届湖南科技大学数学
+                建模校赛（本科组）<br>
+                2 2019 年 9 月 12 日至 15 日：第 28 届“高教社杯”全国大学
+                生数学建模竞赛（本科组）<br>
+                3 2020 年 5 月 18 日至 21 日：第 19 届湖南科技大学数学建模
+                校赛（本科组）<br>
+                4 2020 年 9 月 10 日至 13 日：第 29 届“高教社杯”全国大学
+                生数学建模竞赛（本科组）。<br>
+            </p>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp从当年的 4 月初收到数学建模校赛通知后，我们立即联系了老
+                师，积极组织同学们参加了数学建模的培训，以三人小组的形式，在
+                学校机房不断磨合，实践，共计 60 个课时，历时 4 个月。终于，一
+                分耕耘一分收获，我社代表队在全国大学生数学建模竞赛、美国大学
+                生数学建模竞赛、mathorcup 数学建模挑战杯中均取得了较为傲人的
+                战绩，这不仅是数学建模科技创新协会自身的光芒绽放，更是推动了
+                我校有关于数学建模事业的发展，为我校本科生数学建模竞赛树立起
+                了新的风向标。
+            </p>
+            <h4> §本科生数学建模阶段性成果展示：</h4>
+            <p>
+
+                1 自 2004 年至 2018 年间我社在本科生数学建模竞赛中累计获
+                得★国家级奖 47 项，省级奖 137 项★。<br>
+                2 我社代表队在 2019-2020 年度本科生数学建模竞赛中为我校
+                共争得★国家级奖 14 项，省级奖 58 项★。<br>
+                3 自获得★“小平科技创新团队”★以来，学校启动了小平科
+                技创新团队——数学建模科技创新团队的建设新计划，团队人员兢兢
+                业业，在不同的领域中发光发热,争取为我社乃至我校数学建模事业
+                贡献全部力量。<br>
+            </p>
+
+
+
+            <br>
+            <h3 id="san" style="color: gray;">活动三.“华为杯”研究生数学建模竞赛</h3>
+            <p>
+                数学建模协会旨在通过数学建模来提高学生思考、分析、解决问
+                题的能力和落实创新精神的理念；无论对大学本科生还是研究生，我
+                们都讲究以探索理念式讲座、小组实验、竞赛锻炼、科学研究的创新
+                能力链式培养模式，倡导以学生为主体的创新性实验改革，调动学生
+                的主动性、积极性和创造性，激发学生的创新思维和创新意识，逐渐
+                掌握思考问题、解决问题的方法、提高其创新实践的能力。因此，我
+                们理论联系实际，于<br>
+                2019 年 9 月 19 日至 23 日举办了“华为杯”第 16 届中国研
+                究生数学建模竞赛<br>
+                2019 年 10 月 31 日至 11 月 4 日：湖南省第四届研究生数学
+                建模竞赛<br>
+                2020 年 9 月 17 日至 21 日：“华为杯”第 17 届中国研究生
+                数学建模竞赛<br>
+                2020 年 11 月 26 日至 30 日：湖南省第五届研究生数学建模
+                竞赛。<br>
+
+            </p>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp与本科生数学建模大赛一样，我社通过一些实践性的竞赛，在赛
+                前做好动员工作，组织参加培训，希望广大研究生同学在学习阶段得
+                到科学研究与发明创造的训练，改变目前学生学习过程中实践环节薄
+                弱，动手能力不强的现状，推广研究性学习和个性化培养的教学方式，
+                形成创新教育的氛围。而事实也说明，我们的这种创新教育理念及其
+                相应活动的开展也具有超强的可行性。
+
+            </p>
+            <h4> §研究生数学建模阶段性成果展示：</h4>
+            <p>
+
+                数学建模科技创新协会于 2009 年至 2018 年间共揽获研究生
+                数学建模竞赛★国家级奖 38 项，省级奖 130 项★。<br>
+                2019-2020 年度共获得 ★13 项国家级奖项， 13 项省级奖
+                励★（因湖南省第五届研究生数学建模竞赛成绩未公布，所以暂未
+                统计）。 数学建模创新协会在综合科技创新活动体系中贯彻“两基三合广
+                辐射”的理念。“两基”就是促进学生数学基础与专业基础的交叉融
+                合，“三合”是指培养三人以上的团队合作意识，“广辐射”就是吸
+                引更多专业和年级的学生参与进来。通过小组学习，互相补漏，各专
+                业知识融合，尽可能地让团队成员拓展自己的的专业的知识，在各项
+                比赛各个科技创新项目中充分发挥自身的潜力。<br>
+            </p>
+
+            <br>
+            <h3 id="si" style="color: gray;">其他活动</h3>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp我社为丰富同学们的大学生活，让更多其它学院的同学感受到数
+                学的魅力，在 2019 年 12 月 7 日、2020 年 12 月 19 日分别承办了：<br>
+                湖南科技大学第六届逻辑推理大赛<br>
+                湖南科技大学第六届逻辑推理大赛<br>
+            </p>
+            <p>
+                以“推理有定式，数学无极限”的口号告诉各位同学，数学建模
+                科技创新协会不仅有数学建模，还有更多关于数理逻辑的趣味比赛等
+                待大家的参与。
+            </p>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp同样，为提高同学们对数字的敏感程度，拓展同学们的数学思维，
+                将数学的魅力展现到极致，我社还分别于 2019 年 4 月 14 日、2019
+                年 4 月 11 日举行了：<br>
+                湖南科技大学第八届数独大赛<br>
+                湖南科技大学第九届数独大赛<br>
+            </p>
+            <p>
+                以九宫格的方式书写上同学们对数学深深的热爱与支持，并且也
+                成功在一定程度上扩大了数学建模协会的影响，吸引更多同学加入我
+                们团队，为学校的数学建模事业做更大的贡献！
+            </p>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp更值得一提的是，我社于 2014 年举行了第二届湖南省“高校联
+                盟杯之数独大赛”，这次活动不仅取得了湖南科技大学校团委的强烈
+                支持，更是对湖南省其它高校社团产生了极大的影响，自身取得成果
+                如下：<br>
+                从 2013 年至 2018 年，我社代表团在湖南省“高校联盟杯”
+                中共斩获了★13 项省级奖励★。<br>
+                在 2019 年第六届比赛中，我社也是取得了★团体一等奖★
+                的好成绩！<br>
+            </p>
+            <p>
+                &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp这也充分说明：团结——是我们团队的精神支柱。数学建模科技
+                创新科技创新团队始终坚信着一个优秀的团队想要成功，及时地完成
+                既定目标，就离不开每个成员的全力配合和通力协作。
+            </p>
+
+
+            <br><br><br><br>
+        </div>
+
+    </div>
+
+    <!-- footer(底部) 模块 -->
+    <div class="footer">
+        <div class="w">
+            <div class="copyrigth">
+                <!-- <img src="ShumoLogo.png" alt=""> -->
+                <div class="MingChenM">
+                    <h1>湖南科技大学</h1>
+
+                </div>
+                <div class="MingChenS">
+
+                    <h2>|数学建模协会</h2>
+                </div>
+            </div>
+            <div class="links">
+                <dl>
+                    <dt>联系方式</dt>
+                    <dd>
+                        <p>地址:湖南省湘潭市雨湖区湖南科技大学</p>
+                    </dd>
+                    <dd>
+                        <p>邮编: 411100</p>
+                    </dd>
+                    <dd>
+                        <p>电话:16673255837
+                        </p>
+                    </dd>
+                    <dd>
+                        <p>邮箱:2072588898@qq.com</p>
+                    </dd>
+                </dl>
+
+            </div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

@@ -1,0 +1,275 @@
+/* 去除所有默认内外边距 */
+*{
+    margin: 0;
+    padding: 0;
+}
+a{
+    text-decoration: none;/*消除下换线*/
+
+}
+/* 清除浮动 */
+.clearfix::before,.clearfix::after{
+    content:"";
+    display: table;
+}
+.clearfix::after{
+    clear: both;
+}
+.clearfix {
+    *zoom: 1;
+}
+/* 版心 */
+.w{
+    width: 1200px;
+    margin: auto;
+}
+body{
+    height: auto;
+    /* background-color: #f3f5f7; */
+
+}
+/* 清除li的圆点 */
+li{
+    list-style: none;
+}
+
+/* 头部*/
+.header{
+    height: 180px;
+    background-color: rgb(58, 99, 189,0.3);
+    margin: 0 auto 0  auto;/*会层叠,所以又写一遍*/
+    width: 100%;
+}
+.MingZi{
+    margin-left: 150px;
+    float: left;
+}
+.logo{
+    float: right;
+    /* width: 300px; */
+    height: 100px;
+    /* background-color: purple; */
+}
+.logo img{
+    height: 100px;
+}
+
+.MingChenM h1{
+    float: left;
+    color: rgb(21, 14, 112);
+    line-height: 70px;
+    font-weight:700;
+    font-size:55px;
+    margin-left: 5px;
+    /* padding-top: 30px; */
+    font-family: LiSu;
+
+}
+.MingChenS h2{
+    /* border-left: 1px solid rgb(17, 11, 94); */
+    float: left;
+    color: rgb(17, 11, 94);
+    /* height: 35px; */
+    margin-top: 80;
+    line-height: 80px;
+    /* margin-left: 55px; */
+    font-weight:700;
+    font-size:35px;
+    font-family:STXingkai;
+}
+
+
+        /*轮播图*/
+        .LunBoTu{
+            width: 1200px;
+            height: 400px;
+            background-color: rgb(58, 99, 189,0.3);
+        }
+        .banner {
+            margin: 0 auto;
+            max-width: 1200px;
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /*banner列表*/
+        .banner>.banner-list {
+            overflow: hidden;
+            width: 8400px;
+            position: relative;
+
+        }
+
+        .banner>.banner-list li {
+            float: left;
+            width: 1200px;
+            opacity: 1;
+        }
+
+
+
+        .banner>.banner-list a {
+            display: block;
+        }
+
+        .banner>.banner-list>li img {
+            width: 100%;
+            height: 400px;
+        }
+
+        /*切换banner图片按钮*/
+        .banntoggle {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            margin-left: -60px;
+            
+        }
+
+        .banntoggle li {
+            float: left;
+            height: 16px;
+            width: 16px;
+            margin-left: 14px;
+            background-color: #ffffff;
+            border-radius:50%;
+        }
+
+        .banntoggle .active {
+            background-color: blue;
+        }
+        
+
+/* 社团简介导航栏 */
+.goods{
+    line-height: 60px;/*行高会继承*/
+    height: 60px;
+    background-color: #fff;
+    box-shadow: 0 2px 3px 3px rgba(0, 0,0, 0.1);/*盒子阴影*/
+    margin-top: 10px;
+    margin-bottom: 30px;
+    position: sticky;
+    top: 0;
+}
+
+.goods a{
+    display: block;
+    float: left;
+}
+.goods img{
+    height: 60px;
+    margin-left: 30px;
+}
+.goods ul{
+    float: left;
+    margin-left: 30px;
+}
+.goods ul li{
+    float: left;
+    height: 45px;
+    line-height: 45px;
+    padding: 0 20px;
+}
+.goods ul li a{
+    padding: 0 30px;
+    font-size: 16px;
+    color: #050505;
+    border-left: 1px solid #ccc;
+
+}
+.goods ul li a:hover{
+    color: #00a4ff;
+}
+
+/* 中间盒子 */
+.ZhongJian{
+    /* position:relative; */
+    width: 1200px;
+    
+    margin: auto;
+    height:auto;
+}
+
+/* 左侧导航 */
+.ZhongJian .ZuoDaoHang{
+    position: sticky;
+    top: 100px;
+
+    margin-left: 5px;
+    float: left;
+    width: 200px;
+    /* height: 300px; */
+    /* 浮动的盒子不会有外边距合并的问题,也就不会塌陷 */
+    margin-top: 10px;
+}
+.ZuoDaoHang h2{
+    height: 38px;
+    background-color: #9bceea;
+    font-size: 18px;
+    line-height: 38px;
+    text-align: center;
+    color: #fff;
+}
+
+.bd{
+    padding: 0 20px;
+}
+.bd ul li{
+    padding: 14px 0;
+    border-bottom: 1px solid #ccc;
+}
+.bd ul li h4{
+    font-size: 16px;
+    color: #4e4e4e;
+}
+/* .bd ul li a{
+    padding: 0 30px;
+    font-size: 16px;
+    color: #050505;
+    border-left: 1px solid #ccc;
+
+} */
+.ZuoDaoHang .bd ul li a:hover{
+    color: #00a4ff;
+}
+.JianJie{
+    float: left;
+    width: 800px;
+    margin-left: 30px;
+}
+
+
+
+
+/* footer 模块 */
+.footer{
+    width: 100%;
+    height: 200px;
+    background-color: rgb(58, 99, 189,0.3);
+   
+}
+.footer .w{
+    padding-top: 35px;
+
+}
+.copyrigth {
+    float: left;
+}
+
+.links{
+    float: right;
+}
+.links dl{
+    float: left;
+    margin-left: 100px;
+}
+.links dl dt{
+font-size: 16px;
+color: #333;
+margin-bottom: 5px;
+}
+.links dl dd a{
+    color: #333;
+    font-size: 12px;
+}

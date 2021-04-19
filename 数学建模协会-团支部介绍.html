@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>湖南科技大学--数学建模协会团支部介绍</title>
+
+    <link type="text/css" href="数学建模协会-社团简介.css" rel="stylesheet" />
+
+
+</head>
+
+<body>
+    <!-- 头部盒子 -->
+    <div class="header w">
+        <div class="MingZi">
+            <div class="MingChenM">
+                <h1>湖南科技大学</h1>
+
+            </div>
+            <div class="MingChenS">
+
+                <h2>|数学建模协会</h2>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- 轮播图 -->
+    <div class="LunBoTu w">
+        <div class="banner">
+            <!--banner图片-->
+            <ul class="banner-list clearFix">
+                <li><a href="#"><img src="数模照片/轮播图2.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/1.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/3.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/4.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/轮播图1.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/6.jpg" alt=""></a></li>
+                <li><a href="#"><img src="数模照片/轮播图2.jpg" alt=""></a></li>
+
+
+            </ul>
+            <!--切换banner图片按钮-->
+            <ul class="banntoggle">
+                <li class="active"></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        var banner = document.getElementsByClassName("banner-list")[0]; //获取banner的盒子
+        var bannerimg = document.getElementsByClassName("banner-list")[0].getElementsByTagName("li"); //获取装轮播图的图片li
+        var bannerlist = document.getElementsByClassName("banntoggle")[0].getElementsByTagName("li"); //获取切换图片按钮livar n=0;
+        var time = setInterval(banner1, 3000); //页面加载到这启动定时器
+        var n = 0;
+        var objDom;
+        //鼠标移入banner区域清空定时器
+        banner.onmouseover = function () {
+            clearInterval(time);
+        }
+        //鼠标离开banner重新设置定时器
+        banner.onmouseout = function () {
+            time = setInterval(banner1, 2000);
+        }
+        //轮播图自动轮播
+        function banner1() {
+            n++;
+            if (n == bannerimg.length) {
+                banner.style.left = 0; //改变图片最后切换回第一张时倒退的bug
+                n = 1;
+            }
+            //每一次移动的目标值
+            objDom = { left: -1200 * n };
+            //缓冲运动的移动图片
+            move1(banner, objDom, 6);
+            var oi = { opacity: 30 };
+            //传递函数的时候 是不用写括号的  直接写函数的名字
+            //应该每一张图片都有图片的透明度的变化
+            //每一张图片的淡入淡出
+            move1(bannerimg[n], oi, 30, fn);
+            function fn() {
+                for (i = 0; i < bannerimg.length; i++) {
+                    bannerimg[i].style.opacity = 0.3;
+                }
+            }
+            var oii = { opacity: 100 };
+            move1(bannerimg[n], oii, 30);
+            var linum = n; //专门给切换图片按钮的li设置
+            if (linum == 6) {
+                linum = 0;
+            }
+            liLoop(linum);
+        }
+        //切换banner图的小按钮
+        for (i = 0; i < bannerlist.length; i++) {
+            bannerlist[i].index = i;
+            bannerlist[i].onclick = function () {
+                objDom = { left: -1100 * this.index };
+                move1(banner, objDom, 1);
+                liLoop(this.index)
+                n = this.index;
+            }
+        }
+        //封装的移动函数
+        function move1(obj, json, num, fn) {
+            clearInterval(timer)
+            var timer = setInterval(function () {
+                var tag = true;//定义一个tag来去判断值所有的属性有没有达到我们想要的值
+                //true代表已经到达了这个值
+                for (var attr in json) {
+                    if (attr == 'opacity') {
+                        var cur = parseFloat(leftSty(obj, attr)) * 100;
+                    } else {
+                        var cur = parseInt(leftSty(obj, attr));
+                    }
+                    var step = (json[attr] - cur) / num;
+                    var speed = step > 0 ? Math.ceil(cur + step) : Math.floor(cur + step);
+                    //因为 有某一个属性的目标值  比较小
+                    //这里就先去判断这个优先达到目标值的情况下  就给它停止这个定时器
+                    //只要有一个值没有达到目标  就不应该清除定时器
+                    if (speed != json[attr]) {
+                        tag = false;//定义不让清除定时器
+                    }
+                    if (attr == 'opacity') {
+                        obj.style[attr] = speed / 100;
+                    } else {
+                        obj.style[attr] = speed + 'px';
+                    }
+                }
+                if (tag) {
+                    clearInterval(timer);
+                    fn && fn();  //当我们没有传回调函数的时候  后面的 fn()不会去执行
+                    //fn是有值的时候  就会来去执行 后面的fn();
+                }
+
+            }, 30)
+        }
+        //小方块样式清空与添加
+        function liLoop(ind) { //清空切换banner图按钮
+            for (i = 0; i < bannerlist.length; i++) {
+                bannerlist[i].className = ''; //清空切换按钮
+            }
+            bannerlist[ind].className = 'active'; //给当前相对应图片的li加class  
+        }
+        //封装的获取非行间样式
+        function leftSty(obj, attr) {
+            if (obj.currentStyle) {
+                return obj.currentStyle[attr];
+            } else {
+                return getComputedStyle(obj)[attr];
+            }
+        }
+    </script>
+
+    <!-- 导航栏 -->
+    <div class="goods w">
+        <a href="#"><img src="ShumoLogo.png" alt=""></a>
+        <ul>
+            <li><a href="数学建模协会-社团简介.html" target="-slef">社团简介</a></li>
+            <li><a href="数学建模协会-团支部介绍.html" target="-slef">团支部介绍</a></li>
+            <li><a href="数学建模协会-主要开展活动介绍.html" target="-slef">主要开展活动介绍</a></li>
+            <li><a href="数学建模协会-社团荣誉及宣传报道情况介绍.html" target="-slef">社团荣誉及宣传报道情况介绍</a></li>
+
+
+        </ul>
+    </div>
+
+    <!-- 社团简介 -->
+    <div class="ZhongJian w" style="height: 1700px;">
+        <!-- 左侧导航栏 -->
+        <div class="ZuoDaoHang">
+            <h2>团支部介绍</h2>
+            <div class="bd">
+                <ul>
+                    <li>
+                        <a href="#renyuan">
+                            <h4>现任就职人员</h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#zhize">
+                            <h4>部门职责简介</h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- 团支部介绍 -->
+        <div class="JianJie" style="line-height: 30px;">
+
+            <h3 id="renyuan" style="color: gray;">现任就职人员</h3>
+            <br>
+            <table align="center" cellpadding='5px' cellspacing='0px' width='800px' height='65px'>
+
+                <tr>
+                    <td width='100px'>
+                        职务
+                    </td>
+                    <td>
+                        就职人员
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        会长:
+                    </td>
+                    <td>
+                        陈科航
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        团支书:
+                    </td>
+                    <td>
+                        周正苗
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        副会长:
+                    </td>
+                    <td>
+                        范宇泽 谢铭辉
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        办公室主任:
+                    </td>
+                    <td>
+                        陈岩松
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        办公室副部:
+                    </td>
+                    <td>
+                        朱婕
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        团支书:
+                    </td>
+                    <td>
+                        周正苗
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        组织部部长
+                    </td>
+                    <td>
+                        万梦洁
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        组织部副部:
+                    </td>
+                    <td>
+                        李思明
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        财务部部长:
+                    </td>
+                    <td>
+                        张毓欣
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        财务部副部:
+                    </td>
+                    <td>
+                        黄思苗
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        外联部部长:
+                    </td>
+                    <td>
+                        王子龙
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        外联部副部:
+                    </td>
+                    <td>
+                        欧阳俭怡
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        广宣部部长:
+                    </td>
+                    <td>
+                        周蕊
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        广宣部副部:
+                    </td>
+                    <td>
+                        李奥
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数模部部长:
+                    </td>
+                    <td>
+                        高文慧
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        数模部副部:
+                        <br>
+                        <br>
+                    </td>
+                    <td>
+                        史晓楦 <br>
+                        <br>
+                    </td>
+
+                </tr>
+
+            </table>
+            <br>
+            <br>
+            <h3 id="zhize" style="color: gray;">部门职责简介</h3>
+            <br>
+            <table border='1' align='center' cellpadding='5px' cellspacing='0px' width='800px' height='35px'>
+
+                <tr>
+                    <td width='100px'>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp部门
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp职责简述
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp会长:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp主持平时会议，负责与学院老师、指导老师沟通，与校社联建立深厚的关系。确定社团总体方针。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp团支部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.负责社团团组织建设<br>
+                        &nbsp&nbsp&nbsp2.策划并组织社团内部团组织生活会（策划案 活动总结）<br>
+                        &nbsp&nbsp&nbsp3.评奖评优中“五四红旗团支部”的申请
+
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp副会长:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp协助好会长管理社团正常工作，负责好社团各个部门的正常运行。
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp办公室:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.制作社干、委员、会员通讯录<br>
+                        &nbsp&nbsp&nbsp2.做好每次会议的记录<br>
+                        &nbsp&nbsp&nbsp3.下发活动通知<br>
+                        &nbsp&nbsp&nbsp4.设计会员证件，制作并分发荣誉证书、社干聘书<br>
+                        &nbsp&nbsp&nbsp5.社团人员变动信息更新<br>
+                        &nbsp&nbsp&nbsp6.收集汇总社员问题及意见
+
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp组织部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.迎新、讲座、活动等策划及组织（策划案 活动总结）<br>
+                        &nbsp&nbsp&nbsp2.“十佳社团”的申请<br>
+                        &nbsp&nbsp&nbsp3.配合各部门活动工作<br>
+                        &nbsp&nbsp&nbsp4.总负责除团活外的所有活动
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp财务部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.招新财务收据报表<br>
+                        &nbsp&nbsp&nbsp2.月末、年度财务总报表<br>
+                        &nbsp&nbsp&nbsp3.财务单签字留底<br>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp外联部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.负责社团、跨校等校联工作<br>
+                        &nbsp&nbsp&nbsp2.负责赞助<br>
+                        &nbsp&nbsp&nbsp3.各大活动嘉宾、老师的邀请<br>
+                        &nbsp&nbsp&nbsp4.活动场地的申请<br>
+                        &nbsp&nbsp&nbsp5.粘贴海报横幅、占用场地通知<br>
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp广宣部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.负责绘制各项活动工作的宣传海报<br>
+                        &nbsp&nbsp&nbsp2.设计并制作活动传单<br>
+                        &nbsp&nbsp&nbsp3.负责官Q、微信公众号的管理（活动宣传 日常动态）<br>
+                        &nbsp&nbsp&nbsp4.联系院级、校级刊物做数学竞赛的报道
+
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp数模部:
+                    </td>
+                    <td>
+                        &nbsp&nbsp&nbsp1.策划并举办数学建模的讲座会议<br>
+                        &nbsp&nbsp&nbsp2.负责组织并选拔数独、逻辑推理竞赛人员<br>
+                        &nbsp&nbsp&nbsp（策划数独、逻辑推理竞赛 2选1完成策划案、活动总结）
+
+                    </td>
+                </tr>
+
+            </table>
+            <br><br>
+        </div>
+
+    </div>
+
+
+
+    <!-- footer(底部) 模块 -->
+    <div class="footer">
+        <div class="w">
+            <div class="copyrigth">
+                <!-- <img src="ShumoLogo.png" alt=""> -->
+                <div class="MingChenM">
+                    <h1>湖南科技大学</h1>
+
+                </div>
+                <div class="MingChenS">
+
+                    <h2>|数学建模协会</h2>
+                </div>
+            </div>
+            <div class="links">
+                <dl>
+                    <dt>联系方式</dt>
+                    <dd>
+                        <p>地址:湖南省湘潭市雨湖区湖南科技大学</p>
+                    </dd>
+                    <dd>
+                        <p>邮编: 411100</p>
+                    </dd>
+                    <dd>
+                        <p>电话:16673255837
+                        </p>
+                    </dd>
+                    <dd>
+                        <p>邮箱:2072588898@qq.com</p>
+                    </dd>
+                </dl>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</body>
+
+</html>
